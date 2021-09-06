@@ -17,10 +17,10 @@ class RSSItemsViewController: UIViewController {
     //MARK: - Public properties
     
     static let identifier = "RSSItemsViewController"
-    var feedImage: String?
-    var items: [Item]?
     
     //MARK: - Private properties
+    
+    private var viewModel = RSSItemViewModel()
     
     //MARK: - Lifecycle
 
@@ -31,6 +31,20 @@ class RSSItemsViewController: UIViewController {
 
 }
 
+//MARK: - Public extension -
+
+extension RSSItemsViewController {
+    
+    func setItems(items: [Item]?) {
+        viewModel.items = items
+    }
+    
+    func setFeedImage(image: String?) {
+        viewModel.feedImage = image
+    }
+    
+}
+
 //MARK: - Private extension -
 
 private extension RSSItemsViewController {
@@ -38,7 +52,7 @@ private extension RSSItemsViewController {
     //MARK: - View Setup
     
     private func setupView() {
-        if items != nil {
+        if viewModel.items != nil {
             configureTableView()
         }
         else { dismiss(animated: true, completion: nil) }
@@ -61,17 +75,17 @@ extension RSSItemsViewController: UITableViewDataSource, UITableViewDelegate {
     //MARK: - NumberOfRows and CellForRow
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let items = items { return items.count }
+        if let items = viewModel.items { return items.count }
         else { return 0 }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: RSSTableViewCell.identifier) as? RSSTableViewCell,
-              let items = items else {
+              let items = viewModel.items else {
             return UITableViewCell()
         }
         let item = items[indexPath.row]
-        cell.configureCell(item: item, feedImage: feedImage)
+        cell.configureCell(item: item, feedImage: viewModel.feedImage)
         return cell
     }
     
@@ -85,7 +99,7 @@ extension RSSItemsViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        guard let items = items,
+        guard let items = viewModel.items,
               let itemLink = items[indexPath.row].link,
               let url = URL(string: itemLink)
         else { return }

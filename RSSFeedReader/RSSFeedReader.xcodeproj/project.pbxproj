@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		311A5F5B26E3AE4A009166E9 /* RSSSearchViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311A5F5A26E3AE4A009166E9 /* RSSSearchViewControllerDelegate.swift */; };
 		311A5F5E26E4D586009166E9 /* Alerter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311A5F5D26E4D586009166E9 /* Alerter.swift */; };
+		311A5F7326E679A5009166E9 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311A5F7226E679A5009166E9 /* HomeViewModel.swift */; };
+		311A5F7626E6804D009166E9 /* NewFeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311A5F7526E6804D009166E9 /* NewFeedViewModel.swift */; };
+		311A5F7926E68349009166E9 /* RSSItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311A5F7826E68349009166E9 /* RSSItemViewModel.swift */; };
+		311A5F7C26E68582009166E9 /* RSSSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311A5F7B26E68582009166E9 /* RSSSearchViewModel.swift */; };
 		314EB4EF26E13FF700E3D453 /* RSS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314EB4EE26E13FF700E3D453 /* RSS.swift */; };
 		314EB4F226E1400600E3D453 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314EB4F126E1400600E3D453 /* Image.swift */; };
 		314EB4F526E1401400E3D453 /* Channel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314EB4F426E1401400E3D453 /* Channel.swift */; };
@@ -43,6 +47,10 @@
 /* Begin PBXFileReference section */
 		311A5F5A26E3AE4A009166E9 /* RSSSearchViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSSSearchViewControllerDelegate.swift; sourceTree = "<group>"; };
 		311A5F5D26E4D586009166E9 /* Alerter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alerter.swift; sourceTree = "<group>"; };
+		311A5F7226E679A5009166E9 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		311A5F7526E6804D009166E9 /* NewFeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewFeedViewModel.swift; sourceTree = "<group>"; };
+		311A5F7826E68349009166E9 /* RSSItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSSItemViewModel.swift; sourceTree = "<group>"; };
+		311A5F7B26E68582009166E9 /* RSSSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSSSearchViewModel.swift; sourceTree = "<group>"; };
 		314EB4EE26E13FF700E3D453 /* RSS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSS.swift; sourceTree = "<group>"; };
 		314EB4F126E1400600E3D453 /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		314EB4F426E1401400E3D453 /* Channel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Channel.swift; sourceTree = "<group>"; };
@@ -112,6 +120,7 @@
 			children = (
 				314EB50626E2215E00E3D453 /* RSSSearch.storyboard */,
 				314EB50926E2216F00E3D453 /* RSSSearchViewController.swift */,
+				311A5F7B26E68582009166E9 /* RSSSearchViewModel.swift */,
 			);
 			path = RSSSearch;
 			sourceTree = "<group>";
@@ -217,6 +226,7 @@
 				319DAFD226DF839800BBA6CA /* Home.storyboard */,
 				319DAFD526DF83A500BBA6CA /* HomeViewController.swift */,
 				319DB02526E0F99200BBA6CA /* HomeNavigationViewController.swift */,
+				311A5F7226E679A5009166E9 /* HomeViewModel.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -236,6 +246,7 @@
 			children = (
 				319DAFEB26DFAEC900BBA6CA /* NewFeed.storyboard */,
 				319DAFEE26DFAED500BBA6CA /* NewFeedViewController.swift */,
+				311A5F7526E6804D009166E9 /* NewFeedViewModel.swift */,
 			);
 			path = NewFeed;
 			sourceTree = "<group>";
@@ -263,6 +274,7 @@
 			children = (
 				319DB01F26E0F6F900BBA6CA /* RSSItems.storyboard */,
 				319DB02226E0F70B00BBA6CA /* RSSItemsViewController.swift */,
+				311A5F7826E68349009166E9 /* RSSItemViewModel.swift */,
 			);
 			path = RSSItems;
 			sourceTree = "<group>";
@@ -409,10 +421,12 @@
 				319DAFF826DFB2C300BBA6CA /* NewFeedViewControllerDelegate.swift in Sources */,
 				314EB4EF26E13FF700E3D453 /* RSS.swift in Sources */,
 				314EB50226E14C2200E3D453 /* UIColorExtension.swift in Sources */,
+				311A5F7C26E68582009166E9 /* RSSSearchViewModel.swift in Sources */,
 				31DB612A26E22D86009B4768 /* APIConstants.swift in Sources */,
 				319DAFE326DF9ACD00BBA6CA /* CurrentUser.swift in Sources */,
 				314EB4F226E1400600E3D453 /* Image.swift in Sources */,
 				319DAFD626DF83A500BBA6CA /* HomeViewController.swift in Sources */,
+				311A5F7926E68349009166E9 /* RSSItemViewModel.swift in Sources */,
 				311A5F5B26E3AE4A009166E9 /* RSSSearchViewControllerDelegate.swift in Sources */,
 				319DAFA226DF7C8A00BBA6CA /* AppDelegate.swift in Sources */,
 				319DAFA426DF7C8A00BBA6CA /* SceneDelegate.swift in Sources */,
@@ -420,8 +434,10 @@
 				311A5F5E26E4D586009166E9 /* Alerter.swift in Sources */,
 				319DB00D26E0F3A900BBA6CA /* AlertsContants.swift in Sources */,
 				319DB02326E0F70B00BBA6CA /* RSSItemsViewController.swift in Sources */,
+				311A5F7326E679A5009166E9 /* HomeViewModel.swift in Sources */,
 				319DB02626E0F99200BBA6CA /* HomeNavigationViewController.swift in Sources */,
 				319DAFFF26DFBB6600BBA6CA /* RSSTableViewCell.swift in Sources */,
+				311A5F7626E6804D009166E9 /* NewFeedViewModel.swift in Sources */,
 				319DAFEF26DFAED500BBA6CA /* NewFeedViewController.swift in Sources */,
 				319DAFCB26DF813200BBA6CA /* APIHandler.swift in Sources */,
 			);

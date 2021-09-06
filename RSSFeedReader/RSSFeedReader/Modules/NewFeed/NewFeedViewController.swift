@@ -23,6 +23,10 @@ class NewFeedViewController: UIViewController {
     static let identifier = "NewFeedViewController"
     weak var delegate: NewFeedViewControllerDelegate?
     
+    //MARK: - Private properties
+    
+    private var viewModel = NewFeedViewModel()
+    
     //MARK: - Lifecycle
 
     override func viewDidLoad() {
@@ -98,8 +102,7 @@ extension NewFeedViewController {
         guard let url = feedUrlTextField.text,
               url != ""
         else { return }
-        let myFeeds = CurrentUser.shared.getMyFeeds()
-        if myFeeds.contains(url) {
+        if viewModel.feedAlreadyAdded(feedUrl: url) {
             let alerter = Alerter(title: .feedExitsts, message: .feedAlreadyAdded, preferredStyle: .alert)
             alerter.addAction(title: .ok, style: .default, handler: nil)
             alerter.showAlert(on: self, completion: nil)

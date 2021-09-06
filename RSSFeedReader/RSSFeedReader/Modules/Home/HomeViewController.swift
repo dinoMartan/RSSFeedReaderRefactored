@@ -22,7 +22,7 @@ class HomeViewController: UIViewController {
     
     //MARK: - Private properties
     
-    private var feeds: [MyRSSFeed] = []
+    private var viewModel = HomeViewModel()
     
     //MARK: - Lifecycle
 
@@ -49,7 +49,7 @@ private extension HomeViewController {
     }
     
     private func setNoFeedsView() {
-        if feeds.isEmpty { noFeedsView.isHidden = false }
+        if viewModel.feeds.isEmpty { noFeedsView.isHidden = false }
         else { noFeedsView.isHidden = true }
     }
     
@@ -72,21 +72,16 @@ private extension HomeViewController {
     
     private func fetchMyRssFeeds() {
         tableView.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .rssGradient1, secondaryColor: .rssGrafient2), animation: .none, transition: .crossDissolve(1))
-        let myFeeds = CurrentUser.shared.getMyFeeds()
-        APIHandler.shared.getMultipleRSSFeeds(feedUrls: myFeeds) { [unowned self] rssFeeds in
-            feeds = rssFeeds
-            tableView.hideSkeleton(reloadDataAfter: true, transition: .crossDissolve(1))
-            setNoFeedsView()
+        viewModel.fetchMyRssFeeds {
+            self.tableView.hideSkeleton(reloadDataAfter: true, transition: .crossDissolve(1))
+            self.setNoFeedsView()
         }
     }
     
     private func addNewFeed(feedUrl: String) {
-        CurrentUser.shared.addNewFeed(url: feedUrl)
-        APIHandler.shared.getOneRSSFeed(url: feedUrl) { [unowned self] rssFeed in
-            guard let feed = rssFeed else { return }
-            feeds.append(feed)
-            tableView.reloadData()
-            setNoFeedsView()
+        viewModel.addNewFeed(feedUrl: feedUrl) {
+            self.tableView.reloadData()
+            self.setNoFeedsView()
         } failure: { [unowned self] error in
             let alerter = Alerter(title: .defaultTitle, error: error, preferredStyle: .alert)
             alerter.addAction(title: .ok, style: .default, handler: nil)
@@ -105,14 +100,14 @@ extension HomeViewController: SkeletonTableViewDataSource, UITableViewDelegate {
     //MARK: - TableView NumberOfRows and CellForRow
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return feeds.count
+        return viewModel.feeds.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: RSSTableViewCell.identifier) as? RSSTableViewCell else {
             return UITableViewCell()
         }
-        let myRSSFeed = feeds[indexPath.row]
+        let myRSSFeed = viewModel.feeds[indexPath.row]
         cell.configureCell(feed: myRSSFeed.feed)
         return cell
     }
@@ -123,10 +118,11 @@ extension HomeViewController: SkeletonTableViewDataSource, UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         let rssItemsStoryboard = UIStoryboard(name: "RSSItems", bundle: nil)
         guard let rssItemsViewController = rssItemsStoryboard.instantiateViewController(identifier: RSSItemsViewController.identifier) as? RSSItemsViewController else { return }
-        let currentFeed = feeds[indexPath.row]
+        let currentFeed = viewModel.feeds[indexPath.row]
         let rssItems = currentFeed.feed.channel.items
-        rssItemsViewController.items = rssItems
-        rssItemsViewController.feedImage = currentFeed.feed.channel.image?.url
+        let feedImage = currentFeed.feed.channel.image?.url
+        rssItemsViewController.setItems(items: rssItems)
+        rssItemsViewController.setFeedImage(image: feedImage)
         navigationController?.pushViewController(rssItemsViewController, animated: true)
     }
     
@@ -156,11 +152,7 @@ extension HomeViewController: SkeletonTableViewDataSource, UITableViewDelegate {
     //MARK: - Helper methods
     
     func removeFeed(at indexPath: IndexPath) {
-        let feedIndex = indexPath.row
-        let myRSSFeed = feeds[feedIndex]
-        let feedUrl = myRSSFeed.url
-        if CurrentUser.shared.removeMyFeed(url: feedUrl) {
-            feeds.remove(at: feedIndex)
+        if viewModel.removeFeed(at: indexPath) {
             tableView.reloadData()
             setNoFeedsView()
         }
