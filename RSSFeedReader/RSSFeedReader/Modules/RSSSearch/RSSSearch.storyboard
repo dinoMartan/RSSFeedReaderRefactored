@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Search View Controller-->
+        <scene sceneID="ewA-Gv-ITU">
+            <objects>
+                <viewController storyboardIdentifier="RSSSearchViewController" id="QCK-ud-SZn" customClass="RSSSearchViewController" customModule="RSSFeedReader" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="hYR-Rc-jDM">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="120" estimatedRowHeight="120" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Mys-NE-Uft">
+                                <rect key="frame" x="0.0" y="120" width="414" height="776"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isSkeletonable" value="YES"/>
+                                </userDefinedRuntimeAttributes>
+                            </tableView>
+                            <searchBar contentMode="redraw" placeholder="Search RSS Feeds" showsCancelButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NzI-T2-KMd">
+                                <rect key="frame" x="10" y="54" width="394" height="56"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </searchBar>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="yBz-1f-diz"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <gestureRecognizers/>
+                        <constraints>
+                            <constraint firstItem="Mys-NE-Uft" firstAttribute="top" secondItem="NzI-T2-KMd" secondAttribute="bottom" constant="10" id="8I8-Dh-spw"/>
+                            <constraint firstItem="Mys-NE-Uft" firstAttribute="leading" secondItem="yBz-1f-diz" secondAttribute="leading" id="96U-ED-Vxq"/>
+                            <constraint firstAttribute="bottom" secondItem="Mys-NE-Uft" secondAttribute="bottom" id="EIb-ru-zy4"/>
+                            <constraint firstItem="NzI-T2-KMd" firstAttribute="top" secondItem="yBz-1f-diz" secondAttribute="top" constant="10" id="aYO-Oj-Q8l"/>
+                            <constraint firstItem="NzI-T2-KMd" firstAttribute="leading" secondItem="hYR-Rc-jDM" secondAttribute="leading" constant="10" id="eKb-Nv-G2y"/>
+                            <constraint firstItem="yBz-1f-diz" firstAttribute="trailing" secondItem="Mys-NE-Uft" secondAttribute="trailing" id="gVZ-yW-3bc"/>
+                            <constraint firstItem="yBz-1f-diz" firstAttribute="trailing" secondItem="NzI-T2-KMd" secondAttribute="trailing" constant="10" id="qd5-eJ-W0B"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="searchBar" destination="NzI-T2-KMd" id="Xuh-aP-m2d"/>
+                        <outlet property="tableView" destination="Mys-NE-Uft" id="LVF-lI-5Po"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0Y0-EJ-IUa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="188" y="76"/>
+        </scene>
+    </scenes>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

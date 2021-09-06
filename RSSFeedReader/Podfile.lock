@@ -1,0 +1,38 @@
+PODS:
+  - Alamofire (5.4.3)
+  - SDWebImage (5.11.1):
+    - SDWebImage/Core (= 5.11.1)
+  - SDWebImage/Core (5.11.1)
+  - SkeletonView (1.21.1)
+  - XMLParsing (0.0.3)
+
+DEPENDENCIES:
+  - Alamofire
+  - SDWebImage
+  - SkeletonView
+  - XMLParsing (from `https://github.com/ShawnMoore/XMLParsing.git`)
+
+SPEC REPOS:
+  trunk:
+    - Alamofire
+    - SDWebImage
+    - SkeletonView
+
+EXTERNAL SOURCES:
+  XMLParsing:
+    :git: https://github.com/ShawnMoore/XMLParsing.git
+
+CHECKOUT OPTIONS:
+  XMLParsing:
+    :commit: 594272e4df40798c53ae1735ee65f3f387291670
+    :git: https://github.com/ShawnMoore/XMLParsing.git
+
+SPEC CHECKSUMS:
+  Alamofire: e447a2774a40c996748296fa2c55112fdbbc42f9
+  SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
+  SkeletonView: 5b79eb6e09d2a7f3d2e620d34ff97510a1c763e9
+  XMLParsing: 085edb6fa22c71d6b53a79299f990a91e7414d19
+
+PODFILE CHECKSUM: c30263c279d8a5e7e1fd4912650fb99d2ab4aca7
+
+COCOAPODS: 1.10.1

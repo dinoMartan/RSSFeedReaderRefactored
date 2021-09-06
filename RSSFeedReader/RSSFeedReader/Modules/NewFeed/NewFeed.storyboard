@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--New Feed View Controller-->
+        <scene sceneID="QdS-re-6qg">
+            <objects>
+                <viewController storyboardIdentifier="NewFeedViewController" id="2lZ-1a-qhr" customClass="NewFeedViewController" customModule="RSSFeedReader" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ChK-0u-J1J">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v3c-1O-gRs">
+                                <rect key="frame" x="0.0" y="696" width="414" height="200"/>
+                                <subviews>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="zf2-kO-PcG">
+                                        <rect key="frame" x="40" y="65.5" width="334" height="34"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" textContentType="url"/>
+                                    </textField>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Hws-Xg-dk3">
+                                        <rect key="frame" x="40" y="119.5" width="334" height="60.5"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hSs-sV-YRC">
+                                                <rect key="frame" x="0.0" y="15.5" width="162" height="30"/>
+                                                <color key="backgroundColor" systemColor="systemGreenColor"/>
+                                                <state key="normal" title="Add">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="didTapAddButton:" destination="2lZ-1a-qhr" eventType="touchUpInside" id="22D-Ai-6l5"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ici-Wc-m8v">
+                                                <rect key="frame" x="172" y="15.5" width="162" height="30"/>
+                                                <color key="backgroundColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <state key="normal" title="Cancel">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="didTapCancelButton:" destination="2lZ-1a-qhr" eventType="touchUpInside" id="sxK-rv-c73"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New feed:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uJ8-Xe-w61">
+                                        <rect key="frame" x="40" y="25" width="334" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <gestureRecognizers/>
+                                <constraints>
+                                    <constraint firstItem="zf2-kO-PcG" firstAttribute="top" secondItem="uJ8-Xe-w61" secondAttribute="bottom" constant="20" id="3Vj-uH-D5E"/>
+                                    <constraint firstAttribute="bottom" secondItem="Hws-Xg-dk3" secondAttribute="bottom" constant="20" id="3sC-AT-GrV"/>
+                                    <constraint firstAttribute="height" constant="200" id="D7b-qZ-uff"/>
+                                    <constraint firstItem="uJ8-Xe-w61" firstAttribute="leading" secondItem="v3c-1O-gRs" secondAttribute="leading" constant="40" id="NYA-II-WJl"/>
+                                    <constraint firstItem="zf2-kO-PcG" firstAttribute="leading" secondItem="v3c-1O-gRs" secondAttribute="leading" constant="40" id="YrR-nW-dfJ"/>
+                                    <constraint firstItem="Hws-Xg-dk3" firstAttribute="leading" secondItem="v3c-1O-gRs" secondAttribute="leading" constant="40" id="ZUR-2j-Z46"/>
+                                    <constraint firstItem="Hws-Xg-dk3" firstAttribute="top" secondItem="zf2-kO-PcG" secondAttribute="bottom" constant="20" id="frJ-TJ-By1"/>
+                                    <constraint firstItem="uJ8-Xe-w61" firstAttribute="top" secondItem="v3c-1O-gRs" secondAttribute="top" constant="25" id="gnP-pK-dXy"/>
+                                    <constraint firstAttribute="trailing" secondItem="uJ8-Xe-w61" secondAttribute="trailing" constant="40" id="spz-La-b6n"/>
+                                    <constraint firstAttribute="trailing" secondItem="zf2-kO-PcG" secondAttribute="trailing" constant="40" id="tXA-6O-nts"/>
+                                    <constraint firstAttribute="trailing" secondItem="Hws-Xg-dk3" secondAttribute="trailing" constant="40" id="uZz-bN-C7v"/>
+                                </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="Co1-ja-Yrg" appends="YES" id="RmR-6K-NlC"/>
+                                </connections>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="6hA-hP-sa2"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="v3c-1O-gRs" secondAttribute="bottom" id="5rP-ff-sA5"/>
+                            <constraint firstItem="6hA-hP-sa2" firstAttribute="trailing" secondItem="v3c-1O-gRs" secondAttribute="trailing" id="MAA-7v-xcS"/>
+                            <constraint firstItem="v3c-1O-gRs" firstAttribute="leading" secondItem="6hA-hP-sa2" secondAttribute="leading" id="ani-oF-TCF"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="addButton" destination="hSs-sV-YRC" id="cjk-Gc-nJU"/>
+                        <outlet property="backgroundView" destination="v3c-1O-gRs" id="D4k-1I-EDi"/>
+                        <outlet property="backgroundViewBottomConstraint" destination="5rP-ff-sA5" id="FQd-bQ-prh"/>
+                        <outlet property="cancelButton" destination="Ici-Wc-m8v" id="2qk-G1-05S"/>
+                        <outlet property="feedUrlTextField" destination="zf2-kO-PcG" id="Ptz-90-g1z"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="YIp-ve-6O7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="Co1-ja-Yrg">
+                    <connections>
+                        <action selector="didTapBackgroundView:" destination="2lZ-1a-qhr" id="dg8-wt-PAW"/>
+                    </connections>
+                </tapGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="286" y="-27"/>
+        </scene>
+    </scenes>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGreenColor">
+            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>
