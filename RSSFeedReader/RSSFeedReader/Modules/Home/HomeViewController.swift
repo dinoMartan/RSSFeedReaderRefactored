@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import PureLayout
 import SkeletonView
 
 enum FeedsState {
@@ -17,15 +18,92 @@ enum FeedsState {
 
 class HomeViewController: UIViewController {
     
-    //MARK: - IBOutlets
+    //MARK: - UIElements
     
-    @IBOutlet private weak var tableView: UITableView!
-    @IBOutlet private weak var addNewFeedButton: UIButton!
-    @IBOutlet private weak var noFeedsView: UIView!
+    private let tableView: UITableView = {
+        let tableView = UITableView.newAutoLayout()
+        tableView.register(UINib(nibName: RSSTableViewCell.identifier, bundle: nil), forCellReuseIdentifier: RSSTableViewCell.identifier)
+        tableView.rowHeight = 120
+        tableView.estimatedRowHeight = 120
+        tableView.isSkeletonable = true
+        return tableView
+    }()
+    
+    private let noFeedsView: UIView = {
+        let view = UIView.newAutoLayout()
+        view.backgroundColor = .systemBackground
+        view.isHidden = true
+        return view
+    }()
+    
+    private let noFeedsViewLabel: UILabel = {
+        let label = UILabel.newAutoLayout()
+        label.text = "No feeds!"
+        return label
+    }()
+    
+    private let addNewFeedButtonView: UIView = {
+        let view = UIView.newAutoLayout()
+        view.backgroundColor = .systemOrange
+        view.layer.cornerRadius = 25
+        return view
+    }()
+    
+    private let addNewFeedButton: UIButton = {
+        let button = UIButton.newAutoLayout()
+        button.setImage(UIImage(systemName: "plus"), for: .normal)
+        button.tintColor = .white
+        button.addTarget(self, action: #selector(didTapAddNewFeedButton), for: .touchUpInside)
+        return button
+    }()
+    
+    private var didSetupConstraints = false
+    
+    override func loadView() {
+        view = UIView()
+        title = "RSS Feeds"
+        let searchButton = UIBarButtonItem(
+            image: UIImage(systemName: "magnifyingglass"),
+            style: .plain,
+            target: self,
+            action: #selector(didTapSearchButton)
+        )
+        navigationItem.rightBarButtonItem = searchButton
+        
+        view.addSubview(tableView)
+        
+        view.addSubview(noFeedsView)
+        noFeedsView.addSubview(noFeedsViewLabel)
+        
+        view.addSubview(addNewFeedButtonView)
+        addNewFeedButtonView.addSubview(addNewFeedButton)
+        
+        view.setNeedsUpdateConstraints()
+    }
+    
+    override func updateViewConstraints() {
+        if !didSetupConstraints {
+            didSetupConstraints = true
+            
+            tableView.autoPinEdgesToSuperviewSafeArea(with: .zero)
+            
+            noFeedsView.autoPinEdgesToSuperviewSafeArea(with: .zero)
+            
+            noFeedsViewLabel.autoAlignAxis(toSuperviewAxis: .horizontal)
+            noFeedsViewLabel.autoAlignAxis(toSuperviewAxis: .vertical)
+            
+            addNewFeedButton.autoAlignAxis(toSuperviewAxis: .horizontal)
+            addNewFeedButton.autoAlignAxis(toSuperviewAxis: .vertical)
+            
+            addNewFeedButtonView.autoSetDimensions(to: CGSize(width: 50, height: 50))
+            addNewFeedButtonView.autoPinEdge(toSuperviewEdge: .right, withInset: 30)
+            addNewFeedButtonView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 30)
+        }
+        super.updateViewConstraints()
+        
+    }
     
     //MARK: - Public properties
-    
-    static let identifier = "HomeViewController"
     
     //MARK: - Private properties
     
@@ -38,12 +116,7 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
         setupView()
     }
-    
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        configureUI()
-    }
-    
+
 }
 
 //MARK: - Private extension -
@@ -53,7 +126,7 @@ private extension HomeViewController {
     //MARK: - UI Configuration
     
     private func configureUI() {
-        addNewFeedButton.layer.cornerRadius = addNewFeedButton.frame.height / 2
+        addNewFeedButtonView.layer.cornerRadius = addNewFeedButtonView.frame.height / 2
     }
     
     private func setNoFeedsView(state: FeedsState) {
@@ -83,7 +156,6 @@ private extension HomeViewController {
     private func configureTableView() {
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.register(UINib(nibName: RSSTableViewCell.identifier, bundle: nil), forCellReuseIdentifier: RSSTableViewCell.identifier)
     }
     
     //MARK: - Data
@@ -210,14 +282,14 @@ extension HomeViewController: RSSSearchViewControllerDelegate {
 
 extension HomeViewController {
     
-    @IBAction func didTapAddNewFeedButton(_ sender: Any) {
+    @objc private func didTapAddNewFeedButton(_ sender: Any) {
         let newFeedStoryboard = UIStoryboard.init(name: "NewFeed", bundle: nil)
         guard let newFeedViewController = newFeedStoryboard.instantiateViewController(identifier: NewFeedViewController.identifier) as? NewFeedViewController else { return }
         newFeedViewController.delegate = self
         present(newFeedViewController, animated: true, completion: nil)
     }
     
-    @IBAction func didTapSearchButton(_ sender: Any) {
+    @objc private func didTapSearchButton(_ sender: Any) {
         let searchStoryboard = UIStoryboard(name: "RSSSearch", bundle: nil)
         guard let searchViewController = searchStoryboard.instantiateViewController(identifier: RSSSearchViewController.identifier) as? RSSSearchViewController else { return }
         searchViewController.delegate = self
