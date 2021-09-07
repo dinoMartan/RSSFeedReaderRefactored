@@ -11,14 +11,14 @@ final class HomeViewModel {
     
     //MARK: - Public properties
     
-    var feeds: [MyRSSFeed] = []
+    var feeds: Observable<[MyRSSFeed]> = Observable([])
     
     //MARK: - Public methods
     
     func fetchMyRssFeeds(success: @escaping (() -> Void)) {
         let myFeeds = CurrentUser.shared.getMyFeeds()
         APIHandler.shared.getMultipleRSSFeeds(feedUrls: myFeeds) { [unowned self] rssFeeds in
-            feeds = rssFeeds
+            feeds.value = rssFeeds
             success()
         }
     }
@@ -27,7 +27,7 @@ final class HomeViewModel {
         CurrentUser.shared.addNewFeed(url: feedUrl)
         APIHandler.shared.getOneRSSFeed(url: feedUrl) { [unowned self] rssFeed in
             guard let feed = rssFeed else { return }
-            feeds.append(feed)
+            feeds.value.append(feed)
             success()
         } failure: { error in
             failure(error)
@@ -36,10 +36,10 @@ final class HomeViewModel {
     
     func removeFeed(at indexPath: IndexPath) -> Bool {
         let feedIndex = indexPath.row
-        let myRSSFeed = feeds[feedIndex]
+        let myRSSFeed = feeds.value[feedIndex]
         let feedUrl = myRSSFeed.url
         if CurrentUser.shared.removeMyFeed(url: feedUrl) {
-            feeds.remove(at: feedIndex)
+            feeds.value.remove(at: feedIndex)
             return true
         }
         else {
