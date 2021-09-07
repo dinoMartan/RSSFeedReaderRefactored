@@ -10,5 +10,6 @@ target 'RSSFeedReader' do
   pod 'SDWebImage'
   pod 'XMLParsing', :git => 'https://github.com/ShawnMoore/XMLParsing.git'
   pod 'SkeletonView'
+  pod 'PureLayout'
 
 end

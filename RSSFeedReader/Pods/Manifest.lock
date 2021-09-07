@@ -1,5 +1,6 @@
 PODS:
   - Alamofire (5.4.3)
+  - PureLayout (3.1.8)
   - SDWebImage (5.11.1):
     - SDWebImage/Core (= 5.11.1)
   - SDWebImage/Core (5.11.1)
@@ -8,6 +9,7 @@ PODS:
 
 DEPENDENCIES:
   - Alamofire
+  - PureLayout
   - SDWebImage
   - SkeletonView
   - XMLParsing (from `https://github.com/ShawnMoore/XMLParsing.git`)
@@ -15,6 +17,7 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - Alamofire
+    - PureLayout
     - SDWebImage
     - SkeletonView
 
@@ -29,10 +32,11 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   Alamofire: e447a2774a40c996748296fa2c55112fdbbc42f9
+  PureLayout: a4afb3d79dd958564ce33d22c89f407280d8e6a8
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SkeletonView: 5b79eb6e09d2a7f3d2e620d34ff97510a1c763e9
   XMLParsing: 085edb6fa22c71d6b53a79299f990a91e7414d19
 
-PODFILE CHECKSUM: c30263c279d8a5e7e1fd4912650fb99d2ab4aca7
+PODFILE CHECKSUM: 527c34e73dfdf7a4ca6deec898a3a329e48ed790
 
 COCOAPODS: 1.10.1
