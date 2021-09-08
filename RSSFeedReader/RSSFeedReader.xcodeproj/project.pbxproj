@@ -19,7 +19,6 @@
 		314EB4F526E1401400E3D453 /* Channel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314EB4F426E1401400E3D453 /* Channel.swift */; };
 		314EB4F826E1402100E3D453 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314EB4F726E1402100E3D453 /* Item.swift */; };
 		314EB50226E14C2200E3D453 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314EB50126E14C2200E3D453 /* UIColorExtension.swift */; };
-		314EB50726E2215E00E3D453 /* RSSSearch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 314EB50626E2215E00E3D453 /* RSSSearch.storyboard */; };
 		314EB50A26E2216F00E3D453 /* RSSSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314EB50926E2216F00E3D453 /* RSSSearchViewController.swift */; };
 		314EB50D26E2248C00E3D453 /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314EB50C26E2248C00E3D453 /* SearchResult.swift */; };
 		319DAFA226DF7C8A00BBA6CA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 319DAFA126DF7C8A00BBA6CA /* AppDelegate.swift */; };
@@ -54,7 +53,6 @@
 		314EB4F426E1401400E3D453 /* Channel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Channel.swift; sourceTree = "<group>"; };
 		314EB4F726E1402100E3D453 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		314EB50126E14C2200E3D453 /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
-		314EB50626E2215E00E3D453 /* RSSSearch.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = RSSSearch.storyboard; sourceTree = "<group>"; };
 		314EB50926E2216F00E3D453 /* RSSSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSSSearchViewController.swift; sourceTree = "<group>"; };
 		314EB50C26E2248C00E3D453 /* SearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
 		319DAF9E26DF7C8A00BBA6CA /* RSSFeedReader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RSSFeedReader.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -120,7 +118,6 @@
 		314EB50426E2210A00E3D453 /* RSSSearch */ = {
 			isa = PBXGroup;
 			children = (
-				314EB50626E2215E00E3D453 /* RSSSearch.storyboard */,
 				314EB50926E2216F00E3D453 /* RSSSearchViewController.swift */,
 				311A5F7B26E68582009166E9 /* RSSSearchViewModel.swift */,
 			);
@@ -355,7 +352,6 @@
 			files = (
 				319DAFAE26DF7C9300BBA6CA /* LaunchScreen.storyboard in Resources */,
 				319DAFAB26DF7C9300BBA6CA /* Assets.xcassets in Resources */,
-				314EB50726E2215E00E3D453 /* RSSSearch.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

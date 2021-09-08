@@ -11,13 +11,13 @@ final class RSSSearchViewModel {
     
     //MARK: - Public properties
     
-    var searchResult: SearchResult?
+    var searchResult: Observable<SearchResult?> = Observable(nil)
     
     //MARK: - Public methods
     
     func fetchData(query: String, success: @escaping (() -> Void), failure: @escaping ((Error) -> Void)) {
         APIHandler.shared.searchFeeds(query: query) { [unowned self] searchRes in
-            searchResult = searchRes
+            searchResult.value = searchRes
             success()
         } failure: { error in
             failure(error)
@@ -25,13 +25,16 @@ final class RSSSearchViewModel {
     }
     
     func addNewFeed(feedUrl: String, addFeed: @escaping ((String) -> Void), feedExists: @escaping (() -> Void)) {
-        if feedAlreadyAdded(feedUrl: feedUrl) {
-            feedExists()
-        }
         let url = feedUrl
             .replacingOccurrences(of: "feed/", with: "")
             .replacingOccurrences(of: "http", with: "https")
-        addFeed(url)
+        
+        if feedAlreadyAdded(feedUrl: url) {
+            feedExists()
+        }
+        else {
+            addFeed(url)
+        }
     }
     
     //MARK: - Private methods

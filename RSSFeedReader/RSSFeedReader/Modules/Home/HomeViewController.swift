@@ -283,8 +283,7 @@ extension HomeViewController {
     }
     
     @objc private func didTapSearchButton(_ sender: Any) {
-        let searchStoryboard = UIStoryboard(name: "RSSSearch", bundle: nil)
-        guard let searchViewController = searchStoryboard.instantiateViewController(identifier: RSSSearchViewController.identifier) as? RSSSearchViewController else { return }
+        let searchViewController = RSSSearchViewController()
         searchViewController.delegate = self
         navigationController?.pushViewController(searchViewController, animated: true)
     }
