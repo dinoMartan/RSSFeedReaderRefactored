@@ -50,7 +50,7 @@ private extension RSSSearchViewController {
     private func configureTableView() {
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.register(UINib(nibName: RSSTableViewCell.identifier, bundle: nil), forCellReuseIdentifier: RSSTableViewCell.identifier)
+        tableView.register(RSSTableViewCell.self, forCellReuseIdentifier: RSSTableViewCell.identifier)
     }
     
     //MARK: - SearchBar Configuration

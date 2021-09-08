@@ -12,6 +12,6 @@ final class RSSItemViewModel {
     //MARK: - Public properties
     
     var feedImage: String?
-    var items: [Item]?
+    var items: Observable<[Item]?> = Observable([])
     
 }

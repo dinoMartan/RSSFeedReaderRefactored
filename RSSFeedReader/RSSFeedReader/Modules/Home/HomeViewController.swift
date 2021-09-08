@@ -204,8 +204,7 @@ extension HomeViewController: SkeletonTableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let rssItemsStoryboard = UIStoryboard(name: "RSSItems", bundle: nil)
-        guard let rssItemsViewController = rssItemsStoryboard.instantiateViewController(identifier: RSSItemsViewController.identifier) as? RSSItemsViewController else { return }
+        let rssItemsViewController = RSSItemsViewController()
         let currentFeed = viewModel.feeds.value[indexPath.row]
         let rssItems = currentFeed.feed.channel.items
         let feedImage = currentFeed.feed.channel.image?.url
@@ -278,7 +277,6 @@ extension HomeViewController: RSSSearchViewControllerDelegate {
 extension HomeViewController {
     
     @objc private func didTapAddNewFeedButton(_ sender: Any) {
-
         let newFeedViewController = NewFeedViewController()
         newFeedViewController.delegate = self
         present(newFeedViewController, animated: true, completion: nil)
