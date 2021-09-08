@@ -22,7 +22,7 @@ class HomeViewController: UIViewController {
     
     private let tableView: UITableView = {
         let tableView = UITableView.newAutoLayout()
-        tableView.register(RefactoredTableViewCell.self, forCellReuseIdentifier: RefactoredTableViewCell.identifier)
+        tableView.register(RSSTableViewCell.self, forCellReuseIdentifier: RSSTableViewCell.identifier)
         tableView.rowHeight = 120
         tableView.estimatedRowHeight = 120
         tableView.isSkeletonable = true
@@ -192,7 +192,7 @@ extension HomeViewController: SkeletonTableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: RefactoredTableViewCell.identifier) as? RefactoredTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: RSSTableViewCell.identifier) as? RSSTableViewCell else {
             return UITableViewCell()
         }
         let myRSSFeed = viewModel.feeds.value[indexPath.row]
@@ -217,7 +217,7 @@ extension HomeViewController: SkeletonTableViewDataSource, UITableViewDelegate {
     //MARK: - SkeletonView
     
     func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier {
-        return RefactoredTableViewCell.identifier
+        return RSSTableViewCell.identifier
     }
     
     //MARK: - Row/feed deletion

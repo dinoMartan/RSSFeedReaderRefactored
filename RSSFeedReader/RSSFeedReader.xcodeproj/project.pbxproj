@@ -15,7 +15,6 @@
 		311A5F7C26E68582009166E9 /* RSSSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311A5F7B26E68582009166E9 /* RSSSearchViewModel.swift */; };
 		311A5F8026E7CA14009166E9 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311A5F7F26E7CA14009166E9 /* Observable.swift */; };
 		311A5F8D26E7D282009166E9 /* TestingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311A5F8C26E7D282009166E9 /* TestingViewController.swift */; };
-		311A5FB326E8A999009166E9 /* RefactoredTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311A5FB226E8A999009166E9 /* RefactoredTableViewCell.swift */; };
 		314EB4EF26E13FF700E3D453 /* RSS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314EB4EE26E13FF700E3D453 /* RSS.swift */; };
 		314EB4F226E1400600E3D453 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314EB4F126E1400600E3D453 /* Image.swift */; };
 		314EB4F526E1401400E3D453 /* Channel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314EB4F426E1401400E3D453 /* Channel.swift */; };
@@ -36,7 +35,6 @@
 		319DAFEF26DFAED500BBA6CA /* NewFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 319DAFEE26DFAED500BBA6CA /* NewFeedViewController.swift */; };
 		319DAFF826DFB2C300BBA6CA /* NewFeedViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 319DAFF726DFB2C300BBA6CA /* NewFeedViewControllerDelegate.swift */; };
 		319DAFFF26DFBB6600BBA6CA /* RSSTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 319DAFFD26DFBB6500BBA6CA /* RSSTableViewCell.swift */; };
-		319DB00026DFBB6600BBA6CA /* RSSTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 319DAFFE26DFBB6500BBA6CA /* RSSTableViewCell.xib */; };
 		319DB00A26E0F29200BBA6CA /* MyRSSFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 319DB00926E0F29200BBA6CA /* MyRSSFeed.swift */; };
 		319DB00D26E0F3A900BBA6CA /* AlertsContants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 319DB00C26E0F3A900BBA6CA /* AlertsContants.swift */; };
 		319DB02026E0F6F900BBA6CA /* RSSItems.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 319DB01F26E0F6F900BBA6CA /* RSSItems.storyboard */; };
@@ -55,7 +53,6 @@
 		311A5F7B26E68582009166E9 /* RSSSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSSSearchViewModel.swift; sourceTree = "<group>"; };
 		311A5F7F26E7CA14009166E9 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		311A5F8C26E7D282009166E9 /* TestingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestingViewController.swift; sourceTree = "<group>"; };
-		311A5FB226E8A999009166E9 /* RefactoredTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefactoredTableViewCell.swift; sourceTree = "<group>"; };
 		314EB4EE26E13FF700E3D453 /* RSS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSS.swift; sourceTree = "<group>"; };
 		314EB4F126E1400600E3D453 /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
 		314EB4F426E1401400E3D453 /* Channel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Channel.swift; sourceTree = "<group>"; };
@@ -78,7 +75,6 @@
 		319DAFEE26DFAED500BBA6CA /* NewFeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewFeedViewController.swift; sourceTree = "<group>"; };
 		319DAFF726DFB2C300BBA6CA /* NewFeedViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewFeedViewControllerDelegate.swift; sourceTree = "<group>"; };
 		319DAFFD26DFBB6500BBA6CA /* RSSTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSSTableViewCell.swift; sourceTree = "<group>"; };
-		319DAFFE26DFBB6500BBA6CA /* RSSTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RSSTableViewCell.xib; sourceTree = "<group>"; };
 		319DB00926E0F29200BBA6CA /* MyRSSFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRSSFeed.swift; sourceTree = "<group>"; };
 		319DB00C26E0F3A900BBA6CA /* AlertsContants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertsContants.swift; sourceTree = "<group>"; };
 		319DB01F26E0F6F900BBA6CA /* RSSItems.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = RSSItems.storyboard; sourceTree = "<group>"; };
@@ -125,14 +121,6 @@
 				311A5F8C26E7D282009166E9 /* TestingViewController.swift */,
 			);
 			path = TestingPureLayout;
-			sourceTree = "<group>";
-		};
-		311A5FB126E8A975009166E9 /* Refactored */ = {
-			isa = PBXGroup;
-			children = (
-				311A5FB226E8A999009166E9 /* RefactoredTableViewCell.swift */,
-			);
-			path = Refactored;
 			sourceTree = "<group>";
 		};
 		314EB50026E14C1600E3D453 /* Extensions */ = {
@@ -292,9 +280,7 @@
 		319DAFFC26DFBB5000BBA6CA /* RSSTableView */ = {
 			isa = PBXGroup;
 			children = (
-				311A5FB126E8A975009166E9 /* Refactored */,
 				319DAFFD26DFBB6500BBA6CA /* RSSTableViewCell.swift */,
-				319DAFFE26DFBB6500BBA6CA /* RSSTableViewCell.xib */,
 			);
 			path = RSSTableView;
 			sourceTree = "<group>";
@@ -388,7 +374,6 @@
 				319DB02026E0F6F900BBA6CA /* RSSItems.storyboard in Resources */,
 				319DAFAB26DF7C9300BBA6CA /* Assets.xcassets in Resources */,
 				314EB50726E2215E00E3D453 /* RSSSearch.storyboard in Resources */,
-				319DB00026DFBB6600BBA6CA /* RSSTableViewCell.xib in Resources */,
 				319DAFEC26DFAEC900BBA6CA /* NewFeed.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -464,7 +449,6 @@
 				311A5F5E26E4D586009166E9 /* Alerter.swift in Sources */,
 				319DB00D26E0F3A900BBA6CA /* AlertsContants.swift in Sources */,
 				319DB02326E0F70B00BBA6CA /* RSSItemsViewController.swift in Sources */,
-				311A5FB326E8A999009166E9 /* RefactoredTableViewCell.swift in Sources */,
 				311A5F7326E679A5009166E9 /* HomeViewModel.swift in Sources */,
 				319DB02626E0F99200BBA6CA /* HomeNavigationViewController.swift in Sources */,
 				319DAFFF26DFBB6600BBA6CA /* RSSTableViewCell.swift in Sources */,

@@ -6,24 +6,85 @@
 //
 
 import UIKit
+import PureLayout
+import SkeletonView
 import SDWebImage
 
 class RSSTableViewCell: UITableViewCell {
-    
-    //MARK: - IBOutlets
 
-    @IBOutlet private weak var feedImageView: UIImageView!
-    @IBOutlet private weak var feedNameLabel: UILabel!
-    @IBOutlet private weak var feedDescriptionLabel: UILabel!
-    @IBOutlet private weak var nameDescriptionStackView: UIStackView!
+    //MARK: - UIElements
+    
+    private let feedImageView: UIImageView = {
+        let imageView = UIImageView.newAutoLayout()
+        imageView.image = UIImage(named: "rss")
+        imageView.contentMode = .scaleAspectFill
+        imageView.layer.cornerRadius = 35
+        imageView.isSkeletonable = true
+        return imageView
+    }()
+    
+    private let feedNameLabel: UILabel = {
+        let label = UILabel.newAutoLayout()
+        label.text = "Feed name"
+        label.font = UIFont(name: "Arial", size: 17)
+        label.lineBreakMode = .byWordWrapping
+        label.numberOfLines = 0
+        label.isSkeletonable = true
+        return label
+    }()
+    
+    private let feedDescriptionLabel: UILabel = {
+        let label = UILabel.newAutoLayout()
+        label.text = "Description"
+        label.font = UIFont(name: "Arial", size: 14)
+        label.lineBreakMode = .byTruncatingTail
+        label.numberOfLines = 0
+        label.isSkeletonable = true
+        return label
+    }()
+    
+    private let nameDescriptionStackView: UIStackView = {
+        let stackView = UIStackView.newAutoLayout()
+        stackView.axis = .vertical
+        stackView.alignment = .leading
+        stackView.distribution = .fillEqually
+        stackView.spacing = 5
+        stackView.isSkeletonable = true
+        return stackView
+    }()
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+
+        contentView.addSubview(feedImageView)
+        contentView.addSubview(feedNameLabel)
+        contentView.addSubview(feedDescriptionLabel)
+
+        setNeedsUpdateConfiguration()
+        
+        feedImageView.autoSetDimensions(to: CGSize(width: 70, height: 70))
+        feedImageView.autoPinEdge(toSuperviewEdge: .left, withInset: 10)
+        feedImageView.autoAlignAxis(toSuperviewAxis: .horizontal)
+        
+        feedNameLabel.autoPinEdge(.left, to: .right, of: feedImageView, withOffset: 10)
+        feedNameLabel.autoPinEdge(toSuperviewEdge: .top, withInset: 10)
+        feedNameLabel.autoPinEdge(toSuperviewEdge: .right, withInset: 10)
+
+        feedDescriptionLabel.autoPinEdge(.top, to: .bottom, of: feedNameLabel, withOffset: 10)
+        feedDescriptionLabel.autoPinEdge(.left, to: .right, of: feedImageView, withOffset: 10)
+        feedDescriptionLabel.autoPinEdge(toSuperviewEdge: .bottom, withInset: 10)
+        feedDescriptionLabel.autoPinEdge(toSuperviewEdge: .right, withInset: 10)
+        
+        self.isSkeletonable = true
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     //MARK: - Public properties
     
     static let identifier = "RSSTableViewCell"
-    
-    override func didMoveToSuperview() {
-        feedImageView.layer.cornerRadius = feedImageView.frame.height / 2
-    }
     
     //MARK: - Public methods
     
@@ -66,3 +127,4 @@ class RSSTableViewCell: UITableViewCell {
     }
     
 }
+
