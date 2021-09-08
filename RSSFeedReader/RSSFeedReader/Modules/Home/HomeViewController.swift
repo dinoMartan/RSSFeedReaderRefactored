@@ -278,8 +278,8 @@ extension HomeViewController: RSSSearchViewControllerDelegate {
 extension HomeViewController {
     
     @objc private func didTapAddNewFeedButton(_ sender: Any) {
-        let newFeedStoryboard = UIStoryboard.init(name: "NewFeed", bundle: nil)
-        guard let newFeedViewController = newFeedStoryboard.instantiateViewController(identifier: NewFeedViewController.identifier) as? NewFeedViewController else { return }
+
+        let newFeedViewController = NewFeedViewController()
         newFeedViewController.delegate = self
         present(newFeedViewController, animated: true, completion: nil)
     }

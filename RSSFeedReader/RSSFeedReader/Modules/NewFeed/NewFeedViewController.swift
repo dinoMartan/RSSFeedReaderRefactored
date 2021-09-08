@@ -6,21 +6,112 @@
 //
 
 import UIKit
+import PureLayout
 
 class NewFeedViewController: UIViewController {
     
-    //MARK: - IBOutlets
+    //MARK: - UIElements
     
-    @IBOutlet private weak var backgroundView: UIView!
-    @IBOutlet private weak var feedUrlTextField: UITextField!
-    @IBOutlet private weak var addButton: UIButton!
-    @IBOutlet private weak var cancelButton: UIButton!
-    @IBOutlet private weak var backgroundViewBottomConstraint: NSLayoutConstraint!
+    private let backgroundView: UIView = {
+        let view = UIView.newAutoLayout()
+        view.backgroundColor = .systemBackground
+        view.layer.cornerRadius = 10
+        return view
+    }()
     
+    private let newFeedLabel: UILabel = {
+        let label = UILabel.newAutoLayout()
+        label.text = "New feed:"
+        return label
+    }()
+    
+    private let feedUrlTextField: UITextField = {
+        let textField = UITextField.newAutoLayout()
+        textField.borderStyle = .line
+        return textField
+    }()
+    
+    private let addButton: UIButton = {
+        let button = UIButton.newAutoLayout()
+        button.setTitle("Add", for: .normal)
+        button.backgroundColor = .systemGreen
+        button.layer.cornerRadius = 10
+        button.addTarget(self, action: #selector(didTapAddButton), for: .touchUpInside)
+        return button
+    }()
+    
+    private let cancelButton: UIButton = {
+        let button = UIButton.newAutoLayout()
+        button.setTitle("Cancel", for: .normal)
+        button.backgroundColor = .systemRed
+        button.layer.cornerRadius = 10
+        button.addTarget(self, action: #selector(didTapCancelButton), for: .touchUpInside)
+        return button
+    }()
+    
+    private let buttonsStackView: UIStackView = {
+        let stackView = UIStackView.newAutoLayout()
+        stackView.alignment = .center
+        stackView.distribution = .fillEqually
+        stackView.spacing = 10
+        stackView.axis = .horizontal
+        return stackView
+    }()
+    
+    private let tapGuestureRecognizer: UITapGestureRecognizer = {
+        let recognizer = UITapGestureRecognizer(target: self, action: #selector(didTapBackgroundView))
+        return recognizer
+    }()
+    
+    private var didSetConstranits = false
+    
+    private var backgroundViewBottomContraint: NSLayoutConstraint?
+    
+    override func loadView() {
+        view = UIView()
+        
+        view.addSubview(backgroundView)
+        
+        backgroundView.addSubview(newFeedLabel)
+        backgroundView.addSubview(feedUrlTextField)
+        backgroundView.addSubview(buttonsStackView)
+        
+        buttonsStackView.addArrangedSubview(addButton)
+        buttonsStackView.addArrangedSubview(cancelButton)
+    
+        let tap = UITapGestureRecognizer(target: self, action: #selector(didTapBackgroundView))
+        backgroundView.addGestureRecognizer(tap)
+        
+        view.setNeedsUpdateConstraints()
+    }
+    
+    override func updateViewConstraints() {
+        if !didSetConstranits {
+            didSetConstranits = true
+            
+            backgroundView.autoSetDimension(.height, toSize: 200)
+            backgroundView.autoPinEdge(toSuperviewEdge: .left, withInset: 0)
+            backgroundView.autoPinEdge(toSuperviewEdge: .right, withInset: 0)
+            backgroundViewBottomContraint = backgroundView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 0)
+            
+            newFeedLabel.autoPinEdge(toSuperviewEdge: .left, withInset: 40)
+            newFeedLabel.autoPinEdge(toSuperviewEdge: .right, withInset: 40)
+            newFeedLabel.autoPinEdge(toSuperviewEdge: .top, withInset: 20)
+            
+            feedUrlTextField.autoPinEdge(toSuperviewEdge: .left, withInset: 40)
+            feedUrlTextField.autoPinEdge(toSuperviewEdge: .right, withInset: 40)
+            feedUrlTextField.autoPinEdge(.top, to: .bottom, of: newFeedLabel, withOffset: 20)
+            
+            buttonsStackView.autoPinEdge(.top, to: .bottom, of: feedUrlTextField, withOffset: 20)
+            buttonsStackView.autoPinEdge(toSuperviewEdge: .left, withInset: 40)
+            buttonsStackView.autoPinEdge(toSuperviewEdge: .right, withInset: 40)
+            buttonsStackView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 20)
+        }
+        super.updateViewConstraints()
+    }
     
     //MARK: - Public properties
     
-    static let identifier = "NewFeedViewController"
     weak var delegate: NewFeedViewControllerDelegate?
     
     //MARK: - Private properties
@@ -33,17 +124,7 @@ class NewFeedViewController: UIViewController {
         super.viewDidLoad()
         setupView()
     }
-    
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        configureUI()
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        removeKeyboardObservers()
-    }
-    
+
 }
 
 //MARK: - Private extension -
@@ -54,14 +135,6 @@ private extension NewFeedViewController {
     
     private func setupView() {
         setKeyboardObservers()
-    }
-    
-    //MARK: - UI Configuration
-    
-    private func configureUI() {
-        backgroundView.layer.cornerRadius = 10
-        addButton.layer.cornerRadius = 10
-        cancelButton.layer.cornerRadius = 10
     }
     
     //MARK: - Keyboard Bbservers
@@ -79,14 +152,16 @@ private extension NewFeedViewController {
     @objc func keyboardWillShow(notification: Notification) {
         let keyboardSize = (notification.userInfo?  [UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
         let keyboardHeight = keyboardSize?.height
-        backgroundViewBottomConstraint.constant = keyboardHeight! - view.safeAreaInsets.bottom + 20
+        backgroundViewBottomContraint?.autoRemove()
+        backgroundViewBottomContraint = backgroundView.autoPinEdge(toSuperviewEdge: .bottom, withInset: keyboardHeight!)
         UIView.animate(withDuration: 0.5) {
             self.view.layoutIfNeeded()
         }
     }
 
     @objc func keyboardWillHide(notification: Notification) {
-        backgroundViewBottomConstraint.constant =  0
+        backgroundViewBottomContraint?.autoRemove()
+        backgroundViewBottomContraint = backgroundView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 0)
         UIView.animate(withDuration: 0.5) {
             self.view.layoutIfNeeded()
         }
@@ -98,7 +173,7 @@ private extension NewFeedViewController {
 
 extension NewFeedViewController {
     
-    @IBAction func didTapAddButton(_ sender: Any) {
+    @objc private func didTapAddButton(_ sender: Any) {
         guard let url = feedUrlTextField.text,
               url != ""
         else { return }
@@ -113,11 +188,11 @@ extension NewFeedViewController {
         }
     }
     
-    @IBAction func didTapCancelButton(_ sender: Any) {
+    @objc private func didTapCancelButton(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func didTapBackgroundView(_ sender: Any) {
+    @objc private func didTapBackgroundView(_ sender: Any) {
         feedUrlTextField.resignFirstResponder()
     }
     
