@@ -19,6 +19,7 @@ class RSSTableViewCell: UITableViewCell {
         imageView.image = UIImage(named: "rss")
         imageView.contentMode = .scaleAspectFill
         imageView.layer.cornerRadius = 35
+        imageView.clipsToBounds = true
         imageView.isSkeletonable = true
         return imageView
     }()
@@ -57,25 +58,27 @@ class RSSTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
         contentView.addSubview(feedImageView)
-        contentView.addSubview(feedNameLabel)
-        contentView.addSubview(feedDescriptionLabel)
-
-        setNeedsUpdateConfiguration()
+        contentView.addSubview(nameDescriptionStackView)
+        nameDescriptionStackView.addArrangedSubview(feedNameLabel)
+        nameDescriptionStackView.addArrangedSubview(feedDescriptionLabel)
         
         feedImageView.autoSetDimensions(to: CGSize(width: 70, height: 70))
         feedImageView.autoPinEdge(toSuperviewEdge: .left, withInset: 10)
         feedImageView.autoAlignAxis(toSuperviewAxis: .horizontal)
         
-        feedNameLabel.autoPinEdge(.left, to: .right, of: feedImageView, withOffset: 10)
-        feedNameLabel.autoPinEdge(toSuperviewEdge: .top, withInset: 10)
-        feedNameLabel.autoPinEdge(toSuperviewEdge: .right, withInset: 10)
-
-        feedDescriptionLabel.autoPinEdge(.top, to: .bottom, of: feedNameLabel, withOffset: 10)
-        feedDescriptionLabel.autoPinEdge(.left, to: .right, of: feedImageView, withOffset: 10)
-        feedDescriptionLabel.autoPinEdge(toSuperviewEdge: .bottom, withInset: 10)
-        feedDescriptionLabel.autoPinEdge(toSuperviewEdge: .right, withInset: 10)
+        nameDescriptionStackView.autoPinEdge(.left, to: .right, of: feedImageView, withOffset: 10)
+        nameDescriptionStackView.autoPinEdge(toSuperviewEdge: .top, withInset: 10)
+        nameDescriptionStackView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 10)
+        nameDescriptionStackView.autoPinEdge(toSuperviewEdge: .right, withInset: 10)
+        
+        feedNameLabel.autoPinEdge(.left, to: .left, of: nameDescriptionStackView, withOffset: 0)
+        feedNameLabel.autoPinEdge(.right, to: .right, of: nameDescriptionStackView, withOffset: 0)
+        
+        feedDescriptionLabel.autoPinEdge(.left, to: .left, of: nameDescriptionStackView, withOffset: 0)
+        feedDescriptionLabel.autoPinEdge(.right, to: .right, of: nameDescriptionStackView, withOffset: 0)
         
         self.isSkeletonable = true
+        contentView.setNeedsUpdateConstraints()
     }
     
     required init?(coder: NSCoder) {
@@ -89,41 +92,40 @@ class RSSTableViewCell: UITableViewCell {
     //MARK: - Public methods
     
     func configureCell(feed: RSS) {
-        if let image = feed.channel.image?.url {
-            feedImageView.sd_setImage(with: URL(string: image), completed: nil)
-        }
-        else {
-            feedImageView.image = UIImage(named: "rss")
-        }
-        feedImageView.layer.cornerRadius = feedImageView.frame.height / 2
-        nameDescriptionStackView.distribution = .fill
-        feedNameLabel.text = feed.channel.title ?? "N/A"
-        feedDescriptionLabel.text = feed.channel.description ?? "N/A"
+        setImage(imageUrl: feed.channel.image?.url, feedImage: nil)
+        setNameLabel(text: feed.channel.title)
+        setDescriptionLabel(text: feed.channel.description)
     }
     
     func configureCell(item: Item, feedImage: String?) {
-        nameDescriptionStackView.distribution = .fill
-        if let image = item.image?.url ?? feedImage {
-            feedImageView.sd_setImage(with: URL(string: image), completed: nil)
-        }
-        else {
-            feedImageView.image = UIImage(named: "rss")
-        }
-        feedNameLabel.text = item.title ?? "N/A"
-        feedDescriptionLabel.text = item.description ?? "N/A"
+        setImage(imageUrl: item.image?.url, feedImage: feedImage)
+        setNameLabel(text: item.title)
+        setDescriptionLabel(text: item.description)
     }
     
     func configureCell(result: Result) {
-        feedImageView.layer.cornerRadius = feedImageView.frame.height / 2
-        nameDescriptionStackView.distribution = .fill
-        if let image = result.iconURL {
+        setImage(imageUrl: result.iconURL, feedImage: nil)
+        setNameLabel(text: result.title)
+        setDescriptionLabel(text: result.resultDescription)
+    }
+    
+    //MARK: - Private methods
+    
+    private func setImage(imageUrl: String?, feedImage: String?) {
+        if let image = imageUrl ?? feedImage {
             feedImageView.sd_setImage(with: URL(string: image), completed: nil)
         }
         else {
             feedImageView.image = UIImage(named: "rss")
         }
-        feedNameLabel.text = result.title
-        feedDescriptionLabel.text = result.resultDescription ?? "N/A"
+    }
+    
+    private func setNameLabel(text: String?) {
+        feedNameLabel.text = text ?? "NA"
+    }
+    
+    private func setDescriptionLabel(text: String?) {
+        feedDescriptionLabel.text = text ?? "N/A"
     }
     
 }
