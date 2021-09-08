@@ -22,7 +22,7 @@ class HomeViewController: UIViewController {
     
     private let tableView: UITableView = {
         let tableView = UITableView.newAutoLayout()
-        tableView.register(UINib(nibName: RSSTableViewCell.identifier, bundle: nil), forCellReuseIdentifier: RSSTableViewCell.identifier)
+        tableView.register(RefactoredTableViewCell.self, forCellReuseIdentifier: RefactoredTableViewCell.identifier)
         tableView.rowHeight = 120
         tableView.estimatedRowHeight = 120
         tableView.isSkeletonable = true
@@ -100,7 +100,6 @@ class HomeViewController: UIViewController {
             addNewFeedButtonView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 30)
         }
         super.updateViewConstraints()
-        
     }
     
     //MARK: - Public properties
@@ -124,10 +123,6 @@ class HomeViewController: UIViewController {
 private extension HomeViewController {
     
     //MARK: - UI Configuration
-    
-    private func configureUI() {
-        addNewFeedButtonView.layer.cornerRadius = addNewFeedButtonView.frame.height / 2
-    }
     
     private func setNoFeedsView(state: FeedsState) {
         if isInitialLoading {
@@ -197,7 +192,7 @@ extension HomeViewController: SkeletonTableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: RSSTableViewCell.identifier) as? RSSTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: RefactoredTableViewCell.identifier) as? RefactoredTableViewCell else {
             return UITableViewCell()
         }
         let myRSSFeed = viewModel.feeds.value[indexPath.row]
@@ -222,7 +217,7 @@ extension HomeViewController: SkeletonTableViewDataSource, UITableViewDelegate {
     //MARK: - SkeletonView
     
     func collectionSkeletonView(_ skeletonView: UITableView, cellIdentifierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier {
-        return RSSTableViewCell.identifier
+        return RefactoredTableViewCell.identifier
     }
     
     //MARK: - Row/feed deletion
