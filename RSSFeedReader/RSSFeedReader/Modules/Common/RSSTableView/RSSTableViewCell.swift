@@ -6,63 +6,127 @@
 //
 
 import UIKit
+import PureLayout
+import SkeletonView
 import SDWebImage
 
 class RSSTableViewCell: UITableViewCell {
-    
-    //MARK: - IBOutlets
 
-    @IBOutlet private weak var feedImageView: UIImageView!
-    @IBOutlet private weak var feedNameLabel: UILabel!
-    @IBOutlet private weak var feedDescriptionLabel: UILabel!
-    @IBOutlet private weak var nameDescriptionStackView: UIStackView!
+    //MARK: - UIElements
+    
+    private let feedImageView: UIImageView = {
+        let imageView = UIImageView.newAutoLayout()
+        imageView.image = UIImage(named: "rss")
+        imageView.contentMode = .scaleAspectFill
+        imageView.layer.cornerRadius = 35
+        imageView.clipsToBounds = true
+        imageView.isSkeletonable = true
+        return imageView
+    }()
+    
+    private let feedNameLabel: UILabel = {
+        let label = UILabel.newAutoLayout()
+        label.text = "Feed name"
+        label.font = UIFont(name: "Arial", size: 17)
+        label.lineBreakMode = .byWordWrapping
+        label.numberOfLines = 0
+        label.isSkeletonable = true
+        return label
+    }()
+    
+    private let feedDescriptionLabel: UILabel = {
+        let label = UILabel.newAutoLayout()
+        label.text = "Description"
+        label.font = UIFont(name: "Arial", size: 14)
+        label.lineBreakMode = .byTruncatingTail
+        label.numberOfLines = 0
+        label.isSkeletonable = true
+        return label
+    }()
+    
+    private let nameDescriptionStackView: UIStackView = {
+        let stackView = UIStackView.newAutoLayout()
+        stackView.axis = .vertical
+        stackView.alignment = .leading
+        stackView.distribution = .fillEqually
+        stackView.spacing = 5
+        stackView.isSkeletonable = true
+        return stackView
+    }()
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+
+        contentView.addSubview(feedImageView)
+        contentView.addSubview(nameDescriptionStackView)
+        nameDescriptionStackView.addArrangedSubview(feedNameLabel)
+        nameDescriptionStackView.addArrangedSubview(feedDescriptionLabel)
+        
+        feedImageView.autoSetDimensions(to: CGSize(width: 70, height: 70))
+        feedImageView.autoPinEdge(toSuperviewEdge: .left, withInset: 10)
+        feedImageView.autoAlignAxis(toSuperviewAxis: .horizontal)
+        
+        nameDescriptionStackView.autoPinEdge(.left, to: .right, of: feedImageView, withOffset: 10)
+        nameDescriptionStackView.autoPinEdge(toSuperviewEdge: .top, withInset: 10)
+        nameDescriptionStackView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 10)
+        nameDescriptionStackView.autoPinEdge(toSuperviewEdge: .right, withInset: 10)
+        
+        feedNameLabel.autoPinEdge(.left, to: .left, of: nameDescriptionStackView, withOffset: 0)
+        feedNameLabel.autoPinEdge(.right, to: .right, of: nameDescriptionStackView, withOffset: 0)
+        
+        feedDescriptionLabel.autoPinEdge(.left, to: .left, of: nameDescriptionStackView, withOffset: 0)
+        feedDescriptionLabel.autoPinEdge(.right, to: .right, of: nameDescriptionStackView, withOffset: 0)
+        
+        self.isSkeletonable = true
+        contentView.setNeedsUpdateConstraints()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     //MARK: - Public properties
     
     static let identifier = "RSSTableViewCell"
     
-    override func didMoveToSuperview() {
-        feedImageView.layer.cornerRadius = feedImageView.frame.height / 2
-    }
-    
     //MARK: - Public methods
     
     func configureCell(feed: RSS) {
-        if let image = feed.channel.image?.url {
-            feedImageView.sd_setImage(with: URL(string: image), completed: nil)
-        }
-        else {
-            feedImageView.image = UIImage(named: "rss")
-        }
-        feedImageView.layer.cornerRadius = feedImageView.frame.height / 2
-        nameDescriptionStackView.distribution = .fill
-        feedNameLabel.text = feed.channel.title ?? "N/A"
-        feedDescriptionLabel.text = feed.channel.description ?? "N/A"
+        setImage(imageUrl: feed.channel.image?.url, feedImage: nil)
+        setNameLabel(text: feed.channel.title)
+        setDescriptionLabel(text: feed.channel.description)
     }
     
     func configureCell(item: Item, feedImage: String?) {
-        nameDescriptionStackView.distribution = .fill
-        if let image = item.image?.url ?? feedImage {
-            feedImageView.sd_setImage(with: URL(string: image), completed: nil)
-        }
-        else {
-            feedImageView.image = UIImage(named: "rss")
-        }
-        feedNameLabel.text = item.title ?? "N/A"
-        feedDescriptionLabel.text = item.description ?? "N/A"
+        setImage(imageUrl: item.image?.url, feedImage: feedImage)
+        setNameLabel(text: item.title)
+        setDescriptionLabel(text: item.description)
     }
     
     func configureCell(result: Result) {
-        feedImageView.layer.cornerRadius = feedImageView.frame.height / 2
-        nameDescriptionStackView.distribution = .fill
-        if let image = result.iconURL {
+        setImage(imageUrl: result.iconURL, feedImage: nil)
+        setNameLabel(text: result.title)
+        setDescriptionLabel(text: result.resultDescription)
+    }
+    
+    //MARK: - Private methods
+    
+    private func setImage(imageUrl: String?, feedImage: String?) {
+        if let image = imageUrl ?? feedImage {
             feedImageView.sd_setImage(with: URL(string: image), completed: nil)
         }
         else {
             feedImageView.image = UIImage(named: "rss")
         }
-        feedNameLabel.text = result.title
-        feedDescriptionLabel.text = result.resultDescription ?? "N/A"
+    }
+    
+    private func setNameLabel(text: String?) {
+        feedNameLabel.text = text ?? "NA"
+    }
+    
+    private func setDescriptionLabel(text: String?) {
+        feedDescriptionLabel.text = text ?? "N/A"
     }
     
 }
+

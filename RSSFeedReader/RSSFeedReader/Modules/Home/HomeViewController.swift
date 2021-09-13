@@ -6,23 +6,108 @@
 //
 
 import UIKit
+import PureLayout
 import SkeletonView
+
+enum FeedsState {
+    
+    case noFeeds
+    case ok
+    
+}
 
 class HomeViewController: UIViewController {
     
-    //MARK: - IBOutlets
+    //MARK: - UIElements
     
-    @IBOutlet private weak var tableView: UITableView!
-    @IBOutlet private weak var addNewFeedButton: UIButton!
-    @IBOutlet private weak var noFeedsView: UIView!
+    private let tableView: UITableView = {
+        let tableView = UITableView.newAutoLayout()
+        tableView.register(RSSTableViewCell.self, forCellReuseIdentifier: RSSTableViewCell.identifier)
+        tableView.rowHeight = 120
+        tableView.estimatedRowHeight = 120
+        tableView.isSkeletonable = true
+        return tableView
+    }()
+    
+    private let noFeedsView: UIView = {
+        let view = UIView.newAutoLayout()
+        view.backgroundColor = .systemBackground
+        view.isHidden = true
+        return view
+    }()
+    
+    private let noFeedsViewLabel: UILabel = {
+        let label = UILabel.newAutoLayout()
+        label.text = "No feeds!"
+        return label
+    }()
+    
+    private let addNewFeedButtonView: UIView = {
+        let view = UIView.newAutoLayout()
+        view.backgroundColor = .systemOrange
+        view.layer.cornerRadius = 25
+        return view
+    }()
+    
+    private let addNewFeedButton: UIButton = {
+        let button = UIButton.newAutoLayout()
+        button.setImage(UIImage(systemName: "plus"), for: .normal)
+        button.tintColor = .white
+        button.addTarget(self, action: #selector(didTapAddNewFeedButton), for: .touchUpInside)
+        return button
+    }()
+    
+    private var didSetupConstraints = false
+    
+    override func loadView() {
+        view = UIView()
+        title = "RSS Feeds"
+        let searchButton = UIBarButtonItem(
+            image: UIImage(systemName: "magnifyingglass"),
+            style: .plain,
+            target: self,
+            action: #selector(didTapSearchButton)
+        )
+        navigationItem.rightBarButtonItem = searchButton
+        
+        view.addSubview(tableView)
+        
+        view.addSubview(noFeedsView)
+        noFeedsView.addSubview(noFeedsViewLabel)
+        
+        view.addSubview(addNewFeedButtonView)
+        addNewFeedButtonView.addSubview(addNewFeedButton)
+        
+        view.setNeedsUpdateConstraints()
+    }
+    
+    override func updateViewConstraints() {
+        if !didSetupConstraints {
+            didSetupConstraints = true
+            
+            tableView.autoPinEdgesToSuperviewSafeArea(with: .zero)
+            
+            noFeedsView.autoPinEdgesToSuperviewSafeArea(with: .zero)
+            
+            noFeedsViewLabel.autoAlignAxis(toSuperviewAxis: .horizontal)
+            noFeedsViewLabel.autoAlignAxis(toSuperviewAxis: .vertical)
+            
+            addNewFeedButton.autoAlignAxis(toSuperviewAxis: .horizontal)
+            addNewFeedButton.autoAlignAxis(toSuperviewAxis: .vertical)
+            
+            addNewFeedButtonView.autoSetDimensions(to: CGSize(width: 50, height: 50))
+            addNewFeedButtonView.autoPinEdge(toSuperviewEdge: .right, withInset: 30)
+            addNewFeedButtonView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 30)
+        }
+        super.updateViewConstraints()
+    }
     
     //MARK: - Public properties
     
-    static let identifier = "HomeViewController"
-    
     //MARK: - Private properties
     
-    private var feeds: [MyRSSFeed] = []
+    private var viewModel = HomeViewModel()
+    private var isInitialLoading = true
     
     //MARK: - Lifecycle
 
@@ -30,12 +115,7 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
         setupView()
     }
-    
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        configureUI()
-    }
-    
+
 }
 
 //MARK: - Private extension -
@@ -44,13 +124,18 @@ private extension HomeViewController {
     
     //MARK: - UI Configuration
     
-    private func configureUI() {
-        addNewFeedButton.layer.cornerRadius = addNewFeedButton.frame.height / 2
-    }
-    
-    private func setNoFeedsView() {
-        if feeds.isEmpty { noFeedsView.isHidden = false }
-        else { noFeedsView.isHidden = true }
+    private func setNoFeedsView(state: FeedsState) {
+        if isInitialLoading {
+            isInitialLoading = false
+        }
+        else {
+            switch state {
+            case .noFeeds:
+                noFeedsView.isHidden = false
+            case .ok:
+                noFeedsView.isHidden = true
+            }
+        }
     }
     
     //MARK: - View Setup
@@ -58,6 +143,7 @@ private extension HomeViewController {
     private func setupView() {
         configureTableView()
         fetchMyRssFeeds()
+        bindData()
     }
     
     //MARK: - TableView Configuration
@@ -65,34 +151,31 @@ private extension HomeViewController {
     private func configureTableView() {
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.register(UINib(nibName: RSSTableViewCell.identifier, bundle: nil), forCellReuseIdentifier: RSSTableViewCell.identifier)
     }
     
     //MARK: - Data
     
+    private func bindData() {
+        viewModel.feeds.bind { [unowned self] myFeeds in
+            tableView.reloadData()
+            if myFeeds.isEmpty { setNoFeedsView(state: .noFeeds) }
+            else { setNoFeedsView(state: .ok) }
+        }
+    }
+    
     private func fetchMyRssFeeds() {
         tableView.showAnimatedGradientSkeleton(usingGradient: .init(baseColor: .rssGradient1, secondaryColor: .rssGrafient2), animation: .none, transition: .crossDissolve(1))
-        let myFeeds = CurrentUser.shared.getMyFeeds()
-        APIHandler.shared.getMultipleRSSFeeds(feedUrls: myFeeds) { [unowned self] rssFeeds in
-            feeds = rssFeeds
-            tableView.hideSkeleton(reloadDataAfter: true, transition: .crossDissolve(1))
-            setNoFeedsView()
+        viewModel.fetchMyRssFeeds {
+            self.tableView.hideSkeleton(reloadDataAfter: true, transition: .crossDissolve(1))
         }
     }
     
     private func addNewFeed(feedUrl: String) {
-        CurrentUser.shared.addNewFeed(url: feedUrl)
-        APIHandler.shared.getOneRSSFeed(url: feedUrl) { [unowned self] rssFeed in
-            guard let feed = rssFeed else { return }
-            feeds.append(feed)
-            tableView.reloadData()
-            setNoFeedsView()
-        } failure: { [unowned self] error in
+        viewModel.addNewFeed(feedUrl: feedUrl) {
+        } failure: { error in
             let alerter = Alerter(title: .defaultTitle, error: error, preferredStyle: .alert)
             alerter.addAction(title: .ok, style: .default, handler: nil)
-            alerter.addAction(title: .cancel, style: .cancel, handler: nil)
             alerter.showAlert(on: self, completion: nil)
-            setNoFeedsView()
         }
     }
     
@@ -105,14 +188,14 @@ extension HomeViewController: SkeletonTableViewDataSource, UITableViewDelegate {
     //MARK: - TableView NumberOfRows and CellForRow
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return feeds.count
+        return viewModel.feeds.value.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: RSSTableViewCell.identifier) as? RSSTableViewCell else {
             return UITableViewCell()
         }
-        let myRSSFeed = feeds[indexPath.row]
+        let myRSSFeed = viewModel.feeds.value[indexPath.row]
         cell.configureCell(feed: myRSSFeed.feed)
         return cell
     }
@@ -121,12 +204,12 @@ extension HomeViewController: SkeletonTableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let rssItemsStoryboard = UIStoryboard(name: "RSSItems", bundle: nil)
-        guard let rssItemsViewController = rssItemsStoryboard.instantiateViewController(identifier: RSSItemsViewController.identifier) as? RSSItemsViewController else { return }
-        let currentFeed = feeds[indexPath.row]
+        let rssItemsViewController = RSSItemsViewController()
+        let currentFeed = viewModel.feeds.value[indexPath.row]
         let rssItems = currentFeed.feed.channel.items
-        rssItemsViewController.items = rssItems
-        rssItemsViewController.feedImage = currentFeed.feed.channel.image?.url
+        let feedImage = currentFeed.feed.channel.image?.url
+        rssItemsViewController.setItems(items: rssItems)
+        rssItemsViewController.setFeedImage(image: feedImage)
         navigationController?.pushViewController(rssItemsViewController, animated: true)
     }
     
@@ -156,13 +239,8 @@ extension HomeViewController: SkeletonTableViewDataSource, UITableViewDelegate {
     //MARK: - Helper methods
     
     func removeFeed(at indexPath: IndexPath) {
-        let feedIndex = indexPath.row
-        let myRSSFeed = feeds[feedIndex]
-        let feedUrl = myRSSFeed.url
-        if CurrentUser.shared.removeMyFeed(url: feedUrl) {
-            feeds.remove(at: feedIndex)
+        if viewModel.removeFeed(at: indexPath) {
             tableView.reloadData()
-            setNoFeedsView()
         }
         else {
             let alerter = Alerter(title: .defaultTitle, message: .defaultMessage, preferredStyle: .alert)
@@ -198,16 +276,14 @@ extension HomeViewController: RSSSearchViewControllerDelegate {
 
 extension HomeViewController {
     
-    @IBAction func didTapAddNewFeedButton(_ sender: Any) {
-        let newFeedStoryboard = UIStoryboard.init(name: "NewFeed", bundle: nil)
-        guard let newFeedViewController = newFeedStoryboard.instantiateViewController(identifier: NewFeedViewController.identifier) as? NewFeedViewController else { return }
+    @objc private func didTapAddNewFeedButton(_ sender: Any) {
+        let newFeedViewController = NewFeedViewController()
         newFeedViewController.delegate = self
         present(newFeedViewController, animated: true, completion: nil)
     }
     
-    @IBAction func didTapSearchButton(_ sender: Any) {
-        let searchStoryboard = UIStoryboard(name: "RSSSearch", bundle: nil)
-        guard let searchViewController = searchStoryboard.instantiateViewController(identifier: RSSSearchViewController.identifier) as? RSSSearchViewController else { return }
+    @objc private func didTapSearchButton(_ sender: Any) {
+        let searchViewController = RSSSearchViewController()
         searchViewController.delegate = self
         navigationController?.pushViewController(searchViewController, animated: true)
     }
